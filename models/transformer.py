@@ -20,7 +20,7 @@ class Transformer4EMG(nn.Module):
         # Positional Encoding
         self.positional_encoding = self._get_positional_encoding(self.window_size, self.N_embed)
 
-       # Feature Expansion Layer
+        # Feature Expansion Layer
         self.feature_expansion = nn.Linear(1, self.N_embed)
         self.channel_expansion = nn.Linear(self.num_channels, self.N_embed)
         
@@ -68,15 +68,16 @@ class Transformer4EMG(nn.Module):
         predictions = []
         
         # Move positional encoding to the same device as input
-        positional_encoding = self.positional_encoding.to(device)
+        positional_encoding = self.positional_encoding.unsqueeze(0).to(device)  # shape: (1, window_size, N_embed)
         
         # Expand feature dimension to N_embed for all channels together
-        x = self.channel_expansion(x).to(device)  # shape: (batch_size, window_size, N_embed)
+        x = x.permute(0, 2, 1)  # shape: (batch_size, num_channels, window_size)
+        x = self.channel_expansion(x).permute(0, 2, 1)  # shape: (batch_size, window_size, N_embed)
         
         # Add positional encoding
         x += positional_encoding
         
-        # Apply Layer Normalization (optional)
+        # Apply Layer Normalization
         if self.enable_norm:
             x = self.layer_norm(x)
         
@@ -84,10 +85,15 @@ class Transformer4EMG(nn.Module):
         context_encoded = self.context_encoder(x.permute(1, 0, 2)).to(device)  # shape: (window_size, batch_size, N_embed)
         context_encoded = context_encoded.permute(1, 0, 2)  # shape: (batch_size, window_size, N_embed)
         
-        # Loop over each channel to predict its next value
+        # Apply Layer Normalization to context_encoded
+        if self.enable_norm:
+            context_encoded = self.context_layer_norm(context_encoded)
+        
+        # Loop over each channel to predict its next value (using original input x)
+        original_x = x.permute(0, 2, 1)  # shape: (batch_size, num_channels, window_size)
         for i in range(self.num_channels):
             # Extract features for the current channel i
-            channel_i_features = x[:, :, i].unsqueeze(2)  # shape: (batch_size, window_size, 1)
+            channel_i_features = original_x[:, i, :].unsqueeze(2)  # shape: (batch_size, window_size, 1)
             
             # Expand feature dimension to N_embed
             channel_i_features = self.feature_expansion(channel_i_features).to(device)  # shape: (batch_size, window_size, N_embed)
@@ -102,10 +108,6 @@ class Transformer4EMG(nn.Module):
             # Pass through Single Channel Encoder
             channel_i_encoded = self.single_channel_encoder(channel_i_features.permute(1, 0, 2)).to(device)  # shape: (window_size, batch_size, N_embed)
             channel_i_encoded = channel_i_encoded.permute(1, 0, 2)  # shape: (batch_size, window_size, N_embed)
-            
-            # Apply Layer Normalization (optional)
-            if self.enable_norm:
-                context_encoded = self.context_layer_norm(context_encoded)
             
             # Concatenate Encodings
             combined_encoding = torch.cat((channel_i_encoded, context_encoded), dim=-1)  # shape: (batch_size, window_size, 2 * N_embed)
