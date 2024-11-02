@@ -1,0 +1,51 @@
+dataset:
+  name: SeNic                                                        # "Ninapro", "SeNic" are offered
+  src: datasets/raw/senic_s0
+  # data_key: emg                                                          # If the data is stored in mat, please provide the key for emg data
+  sampling_frequency: 200
+  num_channels: 8
+  
+data_preprocess:
+  enable_filter: False
+  enable_window: True
+  enable_save_windows: True
+
+window:
+  type: fixed_step                                                     # fixed_step and random_step are offered
+  window_size: 50
+  step_size: 10
+  # min_step_size: 10
+  # max_step_size: 50
+  windows_dir: datasets/windows/senic_s0
+  filename: win50_step10.npy
+
+model:
+  name: Transformer4EMG
+  N_embed: 128
+  num_attention_heads: 8
+  num_encoder_layers: 2
+  dropout_prob: 0.1
+  enable_norm: True
+
+train:
+  val_size: 0.2
+  batch_size: 32
+  enable_shuffle: True
+  criterion: MSE                                                        # MSE, L1, Huber, LogCosh are offered
+  num_epochs: 50
+  optimizer: AdamW                                                      # Adam, AdamW, RMSProp, Nadam are offered
+  weight_decay: 0.01                                                    # For AdamW. If using others, comment this line
+  learning_rate: 0.001
+  save_checkpoint: True
+  best_model_path: checkpoints/senic/win50_stp10/transformer/Nembed128_atthead8_encodelay2.pth
+  enable_lr_decay: True
+  lr_decay_step: 10
+  lr_decay_gamma: 0.5
+  # max_epochs: 10000                                                   # For single_sample_train
+  # tolerance: 1e-4                                                     # For single_sample_train
+  # random_sample: False
+
+wandb:
+  enable_wandb: True
+  project: Unlabeled_EMG_Feature_Extraction
+  name: SeNic_win50_stp10_transformer

@@ -1,0 +1,52 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.9.18",
+    "heartbeatAt": "2024-10-15T21:08:08.348448",
+    "startedAt": "2024-10-15T21:08:07.060818",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--config",
+        "configs/ninapro_db5/train_single_sample.yaml",
+        "--task",
+        "single_sample_train"
+    ],
+    "state": "running",
+    "program": "E:\\semester_7\\thesis_code\\main.py",
+    "codePathLocal": "main.py",
+    "codePath": "main.py",
+    "host": "xuzt",
+    "username": "13014",
+    "executable": "D:\\anaconda\\envs\\potnet\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 3201.0,
+        "min": 0.0,
+        "max": 3201.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3201.0,
+            "min": 0.0,
+            "max": 3201.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 931.5113105773926,
+            "used": 256.41543197631836
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+            "memory_total": 6442450944
+        }
+    ],
+    "memory": {
+        "total": 15.855525970458984
+    }
+}

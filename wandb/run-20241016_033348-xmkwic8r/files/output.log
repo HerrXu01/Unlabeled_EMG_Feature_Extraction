@@ -1,0 +1,47 @@
+
+Epoch [1/50], Train Loss: 99.7529, Val Loss: 99.9685
+Epoch [2/50], Train Loss: 97.1992, Val Loss: 99.1625
+Epoch [3/50], Train Loss: 96.3086, Val Loss: 98.7047
+Epoch [4/50], Train Loss: 95.7818, Val Loss: 98.4290
+Epoch [5/50], Train Loss: 95.2017, Val Loss: 98.4201
+Epoch [6/50], Train Loss: 94.9532, Val Loss: 98.3572
+Epoch [7/50], Train Loss: 94.4720, Val Loss: 98.1876
+Epoch [8/50], Train Loss: 94.2727, Val Loss: 97.8378
+Epoch [9/50], Train Loss: 94.0447, Val Loss: 98.0177
+Epoch [10/50], Train Loss: 93.7766, Val Loss: 98.1247
+Epoch [11/50], Train Loss: 93.4357, Val Loss: 98.4144
+Epoch [12/50], Train Loss: 93.1828, Val Loss: 97.8349
+Epoch [13/50], Train Loss: 92.9757, Val Loss: 98.1210
+Epoch [14/50], Train Loss: 92.8031, Val Loss: 98.1575
+Epoch [15/50], Train Loss: 92.6292, Val Loss: 98.1731
+Epoch [16/50], Train Loss: 92.4417, Val Loss: 98.0840
+Epoch [17/50], Train Loss: 92.0854, Val Loss: 98.4486
+Epoch [18/50], Train Loss: 92.1305, Val Loss: 98.2833
+Epoch [19/50], Train Loss: 91.9673, Val Loss: 98.1828
+Epoch [20/50], Train Loss: 91.8363, Val Loss: 98.1151
+Epoch [21/50], Train Loss: 91.8085, Val Loss: 98.1239
+Epoch [22/50], Train Loss: 91.5472, Val Loss: 98.2144
+Epoch [23/50], Train Loss: 91.2437, Val Loss: 98.2099
+Epoch [24/50], Train Loss: 91.2572, Val Loss: 98.5386
+Epoch [25/50], Train Loss: 91.0209, Val Loss: 97.9391
+Epoch [26/50], Train Loss: 91.0798, Val Loss: 98.3913
+Epoch [27/50], Train Loss: 90.9219, Val Loss: 98.2186
+Epoch [28/50], Train Loss: 90.9217, Val Loss: 98.2633
+Traceback (most recent call last):
+  File "E:\semester_7\thesis_code\main.py", line 28, in <module>
+    main()
+  File "E:\semester_7\thesis_code\main.py", line 25, in main
+    registry.get_task_class(args.task)(config).train()
+  File "E:\semester_7\thesis_code\trainer\base_trainer.py", line 142, in train
+    optimizer.step()
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\optimizer.py", line 113, in wrapper
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\autograd\grad_mode.py", line 27, in decorate_context
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 161, in step
+    adamw(params_with_grad,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 218, in adamw
+    func(params,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 309, in _single_tensor_adamw
+    denom = (exp_avg_sq.sqrt() / bias_correction2_sqrt).add_(eps)
+KeyboardInterrupt

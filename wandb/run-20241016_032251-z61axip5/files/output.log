@@ -1,0 +1,34 @@
+
+Epoch [1/50], Train Loss: 98.6723, Val Loss: 98.9079
+Epoch [2/50], Train Loss: 95.4948, Val Loss: 98.0506
+Epoch [3/50], Train Loss: 94.0657, Val Loss: 98.0599
+Epoch [4/50], Train Loss: 93.0670, Val Loss: 97.4753
+Epoch [5/50], Train Loss: 92.1559, Val Loss: 97.0128
+Epoch [6/50], Train Loss: 91.4681, Val Loss: 96.8395
+Epoch [7/50], Train Loss: 90.7869, Val Loss: 97.3560
+Epoch [8/50], Train Loss: 89.9117, Val Loss: 97.2053
+Epoch [9/50], Train Loss: 89.2029, Val Loss: 97.4190
+Epoch [10/50], Train Loss: 88.5811, Val Loss: 98.2223
+Epoch [11/50], Train Loss: 87.9029, Val Loss: 98.9410
+Epoch [12/50], Train Loss: 87.3975, Val Loss: 98.7046
+Epoch [13/50], Train Loss: 86.7192, Val Loss: 99.7766
+Epoch [14/50], Train Loss: 85.8945, Val Loss: 99.4335
+Epoch [15/50], Train Loss: 85.6441, Val Loss: 99.4329
+Traceback (most recent call last):
+  File "E:\semester_7\thesis_code\main.py", line 28, in <module>
+    main()
+  File "E:\semester_7\thesis_code\main.py", line 25, in main
+    registry.get_task_class(args.task)(config).train()
+  File "E:\semester_7\thesis_code\trainer\base_trainer.py", line 142, in train
+    optimizer.step()
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\optimizer.py", line 113, in wrapper
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\autograd\grad_mode.py", line 27, in decorate_context
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 161, in step
+    adamw(params_with_grad,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 218, in adamw
+    func(params,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 309, in _single_tensor_adamw
+    denom = (exp_avg_sq.sqrt() / bias_correction2_sqrt).add_(eps)
+KeyboardInterrupt

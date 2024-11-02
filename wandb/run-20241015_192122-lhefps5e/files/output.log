@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "E:\semester_7\thesis_code\main.py", line 25, in <module>
+    main()
+  File "E:\semester_7\thesis_code\main.py", line 22, in main
+    registry.get_task_class(args.task)(config).train()
+  File "E:\semester_7\thesis_code\trainer\single_sample_trainer.py", line 64, in train
+    if loss.item() < tolerance:
+TypeError: '<' not supported between instances of 'float' and 'str'
+Epoch [0/10000], Loss: 113.661011

@@ -1,0 +1,21 @@
+Epoch [0/10000], Loss: 159.407623
+Epoch [100/10000], Loss: 103.547226
+Epoch [200/10000], Loss: 68.019714
+Epoch [300/10000], Loss: 46.479034
+Epoch [400/10000], Loss: 31.759310
+Epoch [500/10000], Loss: 21.861019
+Epoch [600/10000], Loss: 15.481523
+Traceback (most recent call last):
+  File "E:\semester_7\thesis_code\main.py", line 28, in <module>
+    main()
+  File "E:\semester_7\thesis_code\main.py", line 25, in main
+    registry.get_task_class(args.task)(config).train()
+  File "E:\semester_7\thesis_code\trainer\single_sample_trainer.py", line 51, in train
+    loss = criterion(outputs, targets)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\nn\modules\module.py", line 1130, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\nn\modules\loss.py", line 530, in forward
+    return F.mse_loss(input, target, reduction=self.reduction)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\nn\functional.py", line 3280, in mse_loss
+    return torch._C._nn.mse_loss(expanded_input, expanded_target, _Reduction.get_enum(reduction))
+KeyboardInterrupt

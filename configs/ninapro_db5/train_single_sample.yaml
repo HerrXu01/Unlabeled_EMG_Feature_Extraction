@@ -1,0 +1,46 @@
+dataset:
+  src: datasets/raw/ninapro_db5
+  data_key: emg                                                          # If the data is stored in mat, please provide the key for emg data
+  sampling_frequency: 200
+  num_channels: 16
+  
+data_preprocess:
+  enable_filter: False
+  enable_window: True
+  enable_save_windows: False
+
+filter: 
+  type: lowpass_filter                                                 # Currently lowpass_filter and bandpass_filter are offered
+  cutoff: 5                                                            # If using bandpass_filter, provide lowcut and highcut
+  order: 2
+
+window:
+  type: fixed_length
+  window_size: 200
+  step_size: 100
+  windows_dir: datasets/windows/ninapro_db5
+  filename: win200_step100.npy
+
+model:
+  hidden_dim: 128
+  output_dim: 16
+
+train:
+  val_size: 0.2
+  batch_size: 32
+  enable_shuffle: True
+  criterion: MSE                                                        # MSE, L1, Huber, LogCosh are offered
+  # num_epochs: 100
+  optimizer: AdamW                                                      # Adam, AdamW, RMSProp, Nadam are offered
+  weight_decay: 0.01                                                    # For AdamW. If using others, comment this line
+  learning_rate: 0.001
+  # save_checkpoint: True
+  # best_model_path: checkpoints/ninapro_db5/win200_stp100/lstm/hdim128.pth
+  max_epochs: 10000                                                   # For single_sample_train
+  tolerance: 1e-4                                                     # For single_sample_train
+  random_sample: False
+
+wandb:
+  enable_wandb: True
+  project: Unlabeled_EMG_Feature_Extraction
+  name: ninapro_db5_nofilter_win200_stp100_lstm_hd128_1sample

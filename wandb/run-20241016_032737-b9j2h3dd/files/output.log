@@ -1,0 +1,39 @@
+
+Epoch [1/50], Train Loss: 101.5030, Val Loss: 101.2851
+Epoch [2/50], Train Loss: 99.8095, Val Loss: 100.8382
+Epoch [3/50], Train Loss: 99.4024, Val Loss: 100.3857
+Epoch [4/50], Train Loss: 98.9921, Val Loss: 99.9069
+Epoch [5/50], Train Loss: 98.8159, Val Loss: 100.0483
+Epoch [6/50], Train Loss: 98.7071, Val Loss: 100.2482
+Epoch [7/50], Train Loss: 98.4342, Val Loss: 99.8775
+Epoch [8/50], Train Loss: 98.2617, Val Loss: 99.5080
+Epoch [9/50], Train Loss: 98.1956, Val Loss: 99.5378
+Epoch [10/50], Train Loss: 98.1475, Val Loss: 99.5004
+Epoch [11/50], Train Loss: 97.9851, Val Loss: 99.5343
+Epoch [12/50], Train Loss: 97.9632, Val Loss: 99.5278
+Epoch [13/50], Train Loss: 97.8960, Val Loss: 99.6706
+Epoch [14/50], Train Loss: 97.6138, Val Loss: 99.1820
+Epoch [15/50], Train Loss: 97.8210, Val Loss: 99.1428
+Epoch [16/50], Train Loss: 97.7498, Val Loss: 99.3198
+Epoch [17/50], Train Loss: 97.5541, Val Loss: 99.2695
+Epoch [18/50], Train Loss: 97.6265, Val Loss: 99.3586
+Epoch [19/50], Train Loss: 97.6600, Val Loss: 99.5684
+Epoch [20/50], Train Loss: 97.4651, Val Loss: 99.4269
+Traceback (most recent call last):
+  File "E:\semester_7\thesis_code\main.py", line 28, in <module>
+    main()
+  File "E:\semester_7\thesis_code\main.py", line 25, in main
+    registry.get_task_class(args.task)(config).train()
+  File "E:\semester_7\thesis_code\trainer\base_trainer.py", line 142, in train
+    optimizer.step()
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\optimizer.py", line 113, in wrapper
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\autograd\grad_mode.py", line 27, in decorate_context
+    return func(*args, **kwargs)
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 161, in step
+    adamw(params_with_grad,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 218, in adamw
+    func(params,
+  File "D:\anaconda\envs\potnet\lib\site-packages\torch\optim\adamw.py", line 267, in _single_tensor_adamw
+    exp_avg_sq.mul_(beta2).addcmul_(grad, grad, value=1 - beta2)
+KeyboardInterrupt

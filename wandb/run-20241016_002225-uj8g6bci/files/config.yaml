@@ -1,0 +1,84 @@
+wandb_version: 1
+
+dataset:
+  desc: null
+  value:
+    src: datasets/raw/ninapro_db5
+    data_key: emg
+    sampling_frequency: 200
+    num_channels: 16
+data_preprocess:
+  desc: null
+  value:
+    enable_filter: false
+    enable_window: true
+    enable_save_windows: false
+filter:
+  desc: null
+  value:
+    type: lowpass_filter
+    cutoff: 5
+    order: 2
+window:
+  desc: null
+  value:
+    type: fixed_length
+    window_size: 200
+    step_size: 100
+    windows_dir: datasets/windows/ninapro_db5
+    filename: win200_step100.npy
+model:
+  desc: null
+  value:
+    hidden_dim: 128
+    output_dim: 16
+train:
+  desc: null
+  value:
+    val_size: 0.2
+    batch_size: 32
+    enable_shuffle: true
+    criterion: MSE
+    optimizer: AdamW
+    weight_decay: 0.01
+    learning_rate: 0.001
+    max_epochs: 10000
+    tolerance: 1e-4
+    random_sample: false
+    timestamp: '20241016_002222'
+wandb:
+  desc: null
+  value:
+    enable_wandb: true
+    project: Unlabeled_EMG_Feature_Extraction
+    name: ninapro_db5_nofilter_win200_stp100_lstm_hd128_1sample
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.18
+    cli_version: 0.16.1
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1729030945.663372
+    t:
+      1:
+      - 1
+      - 5
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 53
+      - 55
+      3:
+      - 13
+      - 16
+      - 23
+      4: 3.9.18
+      5: 0.16.1
+      8:
+      - 3
+      - 5
+      13: windows-amd64
