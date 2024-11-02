@@ -71,6 +71,8 @@ class Trainer:
             windows = data_processor.process()
 
         inputs, targets = self.create_self_supervised_pairs(windows)
+        inputs = inputs.astype(np.float32)
+        targets = targets.astype(np.float32)
         train_inputs, val_inputs, train_targets, val_targets = self.split_data(
             inputs,
             targets,

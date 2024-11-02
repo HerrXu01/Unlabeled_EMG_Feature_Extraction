@@ -18,11 +18,11 @@ class Transformer4EMG(nn.Module):
         self.enable_norm = config["model"].get("enable_norm", True)
         
         # Positional Encoding
-        self.positional_encoding = self._get_positional_encoding(self.window_size, self.N_embed)
+        self.positional_encoding = self._get_positional_encoding(self.window_size, self.N_embed).float()
 
-        # Feature Expansion Layer
+       # Feature Expansion Layer
         self.feature_expansion = nn.Linear(1, self.N_embed)
-        self.channel_expansion = nn.Linear(self.num_channels, self.N_embed)
+        self.channel_expansion = nn.Conv1d(self.num_channels, self.N_embed, kernel_size=1)
         
         # Single Channel Encoder
         encoder_layer = nn.TransformerEncoderLayer(
@@ -54,9 +54,9 @@ class Transformer4EMG(nn.Module):
         )
         
     def _get_positional_encoding(self, length, d_model):
-        position = torch.arange(0, length).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2) * -(torch.log(torch.tensor(10000.0)) / d_model))
-        pe = torch.zeros(length, d_model)
+        position = torch.arange(0, length, dtype=torch.float32).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2, dtype=torch.float32) * -(torch.log(torch.tensor(10000.0)) / d_model))
+        pe = torch.zeros(length, d_model, dtype=torch.float32)
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         return pe
@@ -67,36 +67,41 @@ class Transformer4EMG(nn.Module):
         batch_size = x.size(0)
         predictions = []
         
+        ##### 修改位置编码的形状 #####
         # Move positional encoding to the same device as input
         positional_encoding = self.positional_encoding.unsqueeze(0).to(device)  # shape: (1, window_size, N_embed)
         
+        ##### 修改通道扩展部分的实现 #####
         # Expand feature dimension to N_embed for all channels together
-        x = x.permute(0, 2, 1)  # shape: (batch_size, num_channels, window_size)
-        x = self.channel_expansion(x).permute(0, 2, 1)  # shape: (batch_size, window_size, N_embed)
+        x = x.permute(0, 2, 1).to(torch.float32)  # shape: (batch_size, num_channels, window_size)
+        x = self.channel_expansion(x).to(torch.float32)  # Ensure the output is float32  # shape: (batch_size, N_embed, window_size)
+        x = x.permute(0, 2, 1)  # shape: (batch_size, window_size, N_embed)
         
         # Add positional encoding
         x += positional_encoding
         
-        # Apply Layer Normalization
+        # Apply Layer Normalization (optional)
         if self.enable_norm:
             x = self.layer_norm(x)
         
         # Pass through Context Encoder
-        context_encoded = self.context_encoder(x.permute(1, 0, 2)).to(device)  # shape: (window_size, batch_size, N_embed)
+        context_encoded = self.context_encoder(x.permute(1, 0, 2))  # shape: (window_size, batch_size, N_embed)
         context_encoded = context_encoded.permute(1, 0, 2)  # shape: (batch_size, window_size, N_embed)
         
-        # Apply Layer Normalization to context_encoded
+        ##### 将 Layer Normalization 应用到循环之外 #####
+        # Apply Layer Normalization to context_encoded (optional)
         if self.enable_norm:
             context_encoded = self.context_layer_norm(context_encoded)
         
+        ##### 修改单个通道的编码实现 #####
         # Loop over each channel to predict its next value (using original input x)
         original_x = x.permute(0, 2, 1)  # shape: (batch_size, num_channels, window_size)
         for i in range(self.num_channels):
             # Extract features for the current channel i
-            channel_i_features = original_x[:, i, :].unsqueeze(2)  # shape: (batch_size, window_size, 1)
+            channel_i_features = original_x[:, i, :].unsqueeze(2).to(torch.float32)  # shape: (batch_size, window_size, 1)
             
             # Expand feature dimension to N_embed
-            channel_i_features = self.feature_expansion(channel_i_features).to(device)  # shape: (batch_size, window_size, N_embed)
+            channel_i_features = self.feature_expansion(channel_i_features).to(torch.float32)  # shape: (batch_size, window_size, N_embed)
             
             # Add positional encoding
             channel_i_features += positional_encoding
@@ -106,14 +111,14 @@ class Transformer4EMG(nn.Module):
                 channel_i_features = self.layer_norm(channel_i_features)
             
             # Pass through Single Channel Encoder
-            channel_i_encoded = self.single_channel_encoder(channel_i_features.permute(1, 0, 2)).to(device)  # shape: (window_size, batch_size, N_embed)
+            channel_i_encoded = self.single_channel_encoder(channel_i_features.permute(1, 0, 2))  # shape: (window_size, batch_size, N_embed)
             channel_i_encoded = channel_i_encoded.permute(1, 0, 2)  # shape: (batch_size, window_size, N_embed)
             
             # Concatenate Encodings
             combined_encoding = torch.cat((channel_i_encoded, context_encoded), dim=-1)  # shape: (batch_size, window_size, 2 * N_embed)
             
             # Fully Connected Layers to Predict Next Value for Channel i
-            output = self.fc_layers(combined_encoding).to(device)  # shape: (batch_size, window_size, 1)
+            output = self.fc_layers(combined_encoding)  # shape: (batch_size, window_size, 1)
             
             # Take the last time step as the predicted value for channel i at next time point
             predictions.append(output[:, -1, :])  # shape: (batch_size, 1)
