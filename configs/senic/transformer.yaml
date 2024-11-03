@@ -21,25 +21,25 @@ window:
 
 model:
   name: Transformer4EMG
-  N_embed: 128
-  num_attention_heads: 8
-  num_encoder_layers: 2
-  dropout_prob: 0.1
+  N_embed: 256
+  num_attention_heads: 16
+  num_encoder_layers: 4
+  dropout_prob: 0.2
   enable_norm: True
 
 train:
   val_size: 0.2
   batch_size: 32
   enable_shuffle: True
-  criterion: MSE                                                        # MSE, L1, Huber, LogCosh are offered
+  criterion: Huber                                                        # MSE, L1, Huber, LogCosh are offered
   num_epochs: 50
   optimizer: AdamW                                                      # Adam, AdamW, RMSProp, Nadam are offered
   weight_decay: 0.01                                                    # For AdamW. If using others, comment this line
-  learning_rate: 0.001
-  save_checkpoint: True
+  learning_rate: 0.0001
+  save_checkpoint: False
   best_model_path: checkpoints/senic/win50_stp10/transformer/Nembed128_atthead8_encodelay2.pth
   enable_lr_decay: True
-  lr_decay_step: 10
+  lr_decay_step: 5
   lr_decay_gamma: 0.5
   # max_epochs: 10000                                                   # For single_sample_train
   # tolerance: 1e-4                                                     # For single_sample_train
