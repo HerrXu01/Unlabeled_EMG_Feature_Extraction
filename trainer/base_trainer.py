@@ -4,6 +4,7 @@ import os
 import datetime
 import numpy as np
 from torch.utils.data import DataLoader
+from torchsummary import summary
 from models.lstm import LSTM4EMG
 from models.tcn import TCN4EMG
 from models.transformer import Transformer4EMG
@@ -129,6 +130,13 @@ class Trainer:
         criterion  = self.load_criterion()
         optimizer = self.load_optimizer(model.parameters())
         scheduler = self.load_lr_scheduler(optimizer)
+
+        input_size = (
+            self.config["train"]["batch_size"],
+            self.config["window"]["window_size"] - 1,
+            self.config["dataset"]["num_channels"]
+        )
+        summary(model, input_size=input_size)
 
         print(f"Training on {self.device}.")
 
