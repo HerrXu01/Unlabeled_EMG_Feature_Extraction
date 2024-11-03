@@ -4,7 +4,7 @@ import os
 import datetime
 import numpy as np
 from torch.utils.data import DataLoader
-from torchsummary import summary
+from torchinfo import summary
 from models.lstm import LSTM4EMG
 from models.tcn import TCN4EMG
 from models.transformer import Transformer4EMG
