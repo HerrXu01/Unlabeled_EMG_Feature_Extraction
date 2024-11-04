@@ -42,7 +42,7 @@ train:
   save_checkpoint: False
   best_model_path: checkpoints/senic/win50_stp10/transformer/Nembed128_atthead8_encodelay2.pth
   enable_lr_decay: True
-  lr_decay_step: 5
+  lr_decay_step: 10
   lr_decay_gamma: 0.5
   # max_epochs: 10000                                                   # For single_sample_train
   # tolerance: 1e-4                                                     # For single_sample_train
@@ -50,6 +50,6 @@ train:
 
 wandb:
   enable_wandb: True
-  sweep_count: 80                                                       # Uncomment this line when conducting sweep
+  sweep_count: 30                                                       # Uncomment this line when conducting sweep
   project: Unlabeled_EMG_Feature_Extraction
   name: SeNic_win50_stp10_transformer_sweep
