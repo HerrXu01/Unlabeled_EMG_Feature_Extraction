@@ -17,6 +17,7 @@ import trainer.optimizer
 from tqdm import tqdm
 
 @registry.register_task("train")
+@registry.register_task("sweep")
 class Trainer:
 
     def __init__(self, config):
@@ -146,8 +147,7 @@ class Trainer:
         best_model_state_dict = None
         best_epoch = 0
 
-        if self.config["wandb"].get("enable_wandb", False):
-            wandb.login()
+        if self.config["wandb"].get("enable_wandb", False) and self.config["task"]["name"] != "sweep":
             wandb.init(
                 project=self.config["wandb"]["project"],
                 name=self.config["wandb"]["name"],
@@ -190,6 +190,7 @@ class Trainer:
         print(f"The best val loss is {best_val_loss}, achieved at Epoch {best_epoch}.")
         if self.config["wandb"].get("enable_wandb", False):
             wandb.log({"best_val_loss": best_val_loss, "best_epoch": best_epoch})
+            wandb.finish()
         
         if self.config["train"].get("save_checkpoint", False):
             self.save_checkpoint(best_model_state_dict, best_model_path)

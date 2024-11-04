@@ -1,3 +1,6 @@
+# The experiment config file must follow a two-level nested structure, 
+# where each key in the top-level dictionary corresponds to a value that is a single-level dictionary.
+
 dataset:
   name: SeNic                                                        # "Ninapro", "SeNic" are offered
   src: datasets/raw/senic_s0
@@ -8,7 +11,7 @@ dataset:
 data_preprocess:
   enable_filter: False
   enable_window: True
-  enable_save_windows: True
+  enable_save_windows: False
 
 window:
   type: fixed_step                                                     # fixed_step and random_step are offered
@@ -47,5 +50,6 @@ train:
 
 wandb:
   enable_wandb: True
+  sweep_count: 80                                                       # Uncomment this line when conducting sweep
   project: Unlabeled_EMG_Feature_Extraction
-  name: SeNic_win50_stp10_transformer
+  name: SeNic_win50_stp10_transformer_sweep
