@@ -29,6 +29,7 @@ model:
   num_encoder_layers: 4
   dropout_prob: 0.2
   enable_norm: True
+  channels_weight_share: False
 
 train:
   val_size: 0.2

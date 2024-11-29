@@ -1,0 +1,19 @@
+dataset:
+  name: SeNic                                                        # "Ninapro", "SeNic" are offered
+  src: datasets/raw/senic_s0
+  # data_key: emg                                                          # If the data is stored in mat, please provide the key for emg data
+  sampling_frequency: 200
+  num_channels: 8
+
+window:
+  window_size: 51
+
+model:
+  vocab_size: 256                                                      # SeNic dataset has 256 possible values (integers), ranging from -128 to 127
+  n_embed: 256
+  n_head: 8                                                            # n_embed must be a multiple of n_head
+  n_layer: 12
+  dropout: 0.2
+  bias: False
+  token_embedding_type: basic_sum                                      # basic, FC, FC_extended, basic_sum, basic_concat
+  
