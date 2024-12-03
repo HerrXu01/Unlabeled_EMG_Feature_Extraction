@@ -292,6 +292,8 @@ class ChatEMG(GPT_base):
             t <= self.window_size
         ), f"Cannot forward sequence of length {t}, block size is only {self.window_size}"
 
+        print(f"The datatype of inputs is {idx.dtype}.")
+
         predictions = []
 
         for selected_channel in range(self.num_channels):
