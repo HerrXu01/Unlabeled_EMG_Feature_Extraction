@@ -95,7 +95,7 @@ class Registry:
         Usage::
             from common.registry import registry
             @registry.register_task("train")
-            class Trainer:
+            class BaseTrainer:
         """
 
         def wrap(func):

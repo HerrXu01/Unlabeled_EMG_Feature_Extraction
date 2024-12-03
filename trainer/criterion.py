@@ -20,3 +20,7 @@ def log_cosh_loss():
         def forward(self, y_pred, y_true):
             return torch.mean(torch.log(torch.cosh(y_pred - y_true)))
     return LogCoshLoss()
+
+@registry.register_criterion("CE")
+def cross_entropy_loss():
+    return torch.nn.CrossEntropyLoss()

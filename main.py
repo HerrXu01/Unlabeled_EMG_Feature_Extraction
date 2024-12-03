@@ -2,7 +2,7 @@ import argparse
 import yaml
 import wandb
 import copy
-from trainer.base_trainer import Trainer
+from trainer.base_trainer import BaseTrainer
 from trainer.single_sample_trainer import SingleSampleTrainer
 from common.registry import registry
 

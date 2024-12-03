@@ -1,4 +1,3 @@
-"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -128,9 +127,9 @@ class Transformer4EMG(nn.Module):
         predictions = torch.cat(predictions, dim=1)  # shape: (batch_size, num_channels)
         
         return predictions
+
+
 """
-
-
 import torch
 import torch.nn as nn
 from common.registry import registry
@@ -309,3 +308,4 @@ class Transformer4EMG(nn.Module):
         predictions = torch.cat(predictions, dim=1)  # 形状: (batch_size, num_channels)
         
         return predictions
+"""

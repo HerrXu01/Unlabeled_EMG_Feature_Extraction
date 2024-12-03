@@ -8,6 +8,7 @@ from torchinfo import summary
 from models.lstm import LSTM4EMG
 from models.tcn import TCN4EMG
 from models.transformer import Transformer4EMG
+from models.chatemg import ChatEMG
 from data_processing.datasets import EMGDataset
 from data_processing.preprocess import EMGPreprocessor
 from sklearn.model_selection import train_test_split
@@ -18,7 +19,7 @@ from tqdm import tqdm
 
 @registry.register_task("train")
 @registry.register_task("sweep")
-class Trainer:
+class BaseTrainer:
 
     def __init__(self, config):
         self.config = config
@@ -58,17 +59,21 @@ class Trainer:
         """
         Prepare dataloader for training and validation.
         """
-        windows_dir = self.config["window"]["windows_dir"]
+        windows_dir = self.config["window"].get("windows_dir", None)
         filename = self.config["window"]["filename"]
-        file_path = os.path.join(windows_dir, filename)
         batch_size = self.config["train"]["batch_size"]
         shuffle = self.config["train"]["enable_shuffle"]
 
-        if os.path.exists(windows_dir) and os.path.isfile(file_path):
-            print(f"Sliding windows data found at: {file_path}")
-            print("Loading data ...")
-            windows = np.load(file_path)
-        else:
+        windows = None
+        if windows_dir:
+            file_path = os.path.join(windows_dir, filename)
+            if os.path.exists(windows_dir) and os.path.isfile(file_path):
+                print(f"Sliding windows data found at: {file_path}")
+                print("Loading data from existing files ...")
+                windows = np.load(file_path)
+
+        if windows is None:    
+            print("Processing data ...")
             data_processor = EMGPreprocessor(self.config)
             windows = data_processor.process()
 
@@ -128,7 +133,7 @@ class Trainer:
     def train(self):
         train_loader, val_loader = self.load_datasets()
         model = self.load_model()
-        criterion  = self.load_criterion()
+        criterion = self.load_criterion()
         optimizer = self.load_optimizer(model.parameters())
         scheduler = self.load_lr_scheduler(optimizer)
 

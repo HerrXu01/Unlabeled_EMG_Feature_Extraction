@@ -1,14 +1,32 @@
+# The experiment config file must follow a two-level nested structure, 
+# where each key in the top-level dictionary corresponds to a value that is a single-level dictionary.
+
 dataset:
   name: SeNic                                                        # "Ninapro", "SeNic" are offered
   src: datasets/raw/senic_s0
   # data_key: emg                                                          # If the data is stored in mat, please provide the key for emg data
   sampling_frequency: 200
   num_channels: 8
+  convert_dtype: True                                                # If true, prepare the data as long type. Usually true when the self-supervised task is classification
+  enable_offset: True                                                # If ture, the offset will be added to the data. E.g. ChatEMG doesn't take negative inputs
+  offset: 128                                                        # The offset value, int
+
+data_preprocess:
+  enable_filter: False
+  enable_window: True
+  enable_save_windows: False
 
 window:
+  type: fixed_step                                                     # fixed_step and random_step are offered
   window_size: 51
+  step_size: 10
+  # min_step_size: 10
+  # max_step_size: 50
+  windows_dir: datasets/windows/senic_s0
+  filename: win51_step10.npy
 
 model:
+  name: ChatEMG
   vocab_size: 256                                                      # SeNic dataset has 256 possible values (integers), ranging from -128 to 127
   n_embed: 256
   n_head: 8                                                            # n_embed must be a multiple of n_head
@@ -16,4 +34,23 @@ model:
   dropout: 0.2
   bias: False
   token_embedding_type: basic_sum                                      # basic, FC, FC_extended, basic_sum, basic_concat
-  
+
+train:
+  val_size: 0.2
+  batch_size: 32
+  enable_shuffle: True                                                 
+  criterion: CE                                                     # MSE, L1, Huber, LogCosh, CE are offered
+  num_epochs: 50
+  optimizer: AdamW                                                      # Adam, AdamW, RMSProp, Nadam are offered
+  weight_decay: 0.01                                                    # For AdamW. If using others, comment this line
+  learning_rate: 0.0001
+  save_checkpoint: False
+  # best_model_path: checkpoints/senic/win50_stp10/transformer/Nembed128_atthead8_encodelay2.pth
+  enable_lr_decay: True
+  lr_decay_step: 5
+  lr_decay_gamma: 0.5
+
+wandb:
+  enable_wandb: True                                                    # Uncomment this line when conducting sweep
+  project: Unlabeled_EMG_Feature_Extraction
+  name: SeNic_chatemg

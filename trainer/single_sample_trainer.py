@@ -1,11 +1,11 @@
 import torch
 import random
 import wandb
-from trainer.base_trainer import Trainer
+from trainer.base_trainer import BaseTrainer
 from common.registry import registry
 
 @registry.register_task("single_sample_train")
-class SingleSampleTrainer(Trainer):
+class SingleSampleTrainer(BaseTrainer):
     def __init__(self, config):
         super().__init__(config)
         
