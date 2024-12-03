@@ -11,7 +11,11 @@ class ChatEMGTrainer(BaseTrainer):
         super().__init__(config)
 
     def train(self):
-        train_loader, val_loader = self.load_datasets()
+        train_loader, val_loader = self.load_datasets(
+            convert_dtype=self.config["dataset"]["convert_dtype"],
+            enable_offset=self.config["dataset"]["enable_offset"],
+            offset=self.config["dataset"]["offset"]
+        )
         model = self.load_model()
         criterion = self.load_criterion()
         optimizer = self.load_optimizer(model.parameters())
