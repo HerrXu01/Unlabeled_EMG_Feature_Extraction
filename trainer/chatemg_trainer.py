@@ -48,9 +48,7 @@ class ChatEMGTrainer(BaseTrainer):
             train_loss = 0.0
             train_huber = 0.0
             for inputs, targets in tqdm(train_loader, desc=f"Training Epoch {epoch+1}/{num_epochs}"):
-                print(f"In trainer: the data type of inputs is {inputs.dtype}")
                 inputs, targets = inputs.to(self.device), targets.to(self.device)
-                print(f"In trainer on gpu: the data type of inputs is {inputs.dtype}")
                 outputs = model(inputs)
                 outputs_flat = outputs.view(-1, outputs.size(-1))
                 targets_flat = targets.view(-1)

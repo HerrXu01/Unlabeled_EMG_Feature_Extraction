@@ -313,7 +313,7 @@ class ChatEMG(GPT_base):
             x_context = self.transformer_context.ln_f(x_context)
 
             tok_emb_channel = self.transformer_channel.wte(
-                idx[:, :, selected_channel]
+                idx[:, :, selected_channel].long()
             ).reshape(
                 b, t, self.n_embed
             )  # token embeddings of shape (b, t, n_embd)
