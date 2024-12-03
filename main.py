@@ -4,6 +4,7 @@ import wandb
 import copy
 from trainer.base_trainer import BaseTrainer
 from trainer.single_sample_trainer import SingleSampleTrainer
+from trainer.chatemg_trainer import ChatEMGTrainer
 from common.registry import registry
 
 def parse_args():
