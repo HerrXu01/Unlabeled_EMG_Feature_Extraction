@@ -26,7 +26,7 @@ class ChatEMGTrainer(BaseTrainer):
             self.config["window"]["window_size"] - 1,
             self.config["dataset"]["num_channels"]
         )
-        summary(model, input_size=input_size)
+        summary(model, input_size=input_size, dtypes=[torch.long])
 
         print(f"Training on {self.device}.")
 
