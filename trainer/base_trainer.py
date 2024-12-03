@@ -55,7 +55,7 @@ class BaseTrainer:
         """
         return train_test_split(inputs, targets, test_size=test_size, random_state=42, shuffle=shuffle)
 
-    def load_datasets(self):
+    def load_datasets(self, convert_dtype=False, enable_offset=False, offset=0):
         """
         Prepare dataloader for training and validation.
         """
@@ -87,8 +87,20 @@ class BaseTrainer:
             shuffle=shuffle
         )
 
-        train_dataset = EMGDataset(train_inputs, train_targets)
-        val_dataset = EMGDataset(val_inputs, val_targets)
+        train_dataset = EMGDataset(
+            train_inputs, 
+            train_targets,
+            convert_dtype=convert_dtype,
+            enable_offset=enable_offset,
+            offset=offset
+        )
+        val_dataset = EMGDataset(
+            val_inputs, 
+            val_targets,
+            convert_dtype=convert_dtype,
+            enable_offset=enable_offset,
+            offset=offset
+        )
 
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
