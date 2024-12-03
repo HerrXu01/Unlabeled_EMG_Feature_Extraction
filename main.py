@@ -18,7 +18,7 @@ def parse_args():
         '--task', 
         type=str, 
         required=True, 
-        choices=['train', 'sweep', 'single_sample_train'], 
+        choices=['train', 'sweep', 'single_sample_train', 'chatemg_train'], 
         help='Task to run: train or single_sample_train.'
     )
     parser.add_argument(

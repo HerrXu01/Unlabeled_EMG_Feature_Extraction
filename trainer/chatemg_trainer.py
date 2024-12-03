@@ -4,8 +4,10 @@ from trainer.base_trainer import BaseTrainer
 from models.chatemg import ChatEMG
 from torchinfo import summary
 from tqdm import tqdm
+from common.registry import registry
 
 
+@registry.register_task("chatemg_train")
 class ChatEMGTrainer(BaseTrainer):
     def __init__(self, config):
         super().__init__(config)
