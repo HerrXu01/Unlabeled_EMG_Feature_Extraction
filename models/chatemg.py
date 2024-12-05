@@ -333,6 +333,8 @@ class ChatEMG(GPT_base):
             x_combined = torch.cat((x_channel_last, x_context_last), dim=1)  # shape (batch_size, n_embed * 2)
             x = self.latent_decoder(x_combined)  # shape (batch_size, n_embed)
 
+            x = new_gelu(x)
+
             # Pass through lm_head to get the final output
             x = self.lm_head(x)  # shape (batch_size, vocab_size)
 
